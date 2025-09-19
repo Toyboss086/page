@@ -2,23 +2,66 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Toy_boss page</title>
+  <title>Toy_boss</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="profile-card">
-    <img src="PP.jpg" alt="Avatar TB" class="avatar">
-    <h1>Toy_boss</h1>
-    <p>Salut.</br>
-	   Moi, c'est Toy_boss, un jeune youtubeur qui a créer un serveur discord. J'ai des liens qui peuvent
-	   être utiles dont mon serveur discord et ma chaine Youtube.</p>
-    <div class="icons">
-      <a href="https://discord.gg/NKY73CRepF"><img src="DC.png" alt="discord community"></a>
-      <a href="https://ko-fi.com/toyboss"><img src="KF.png" alt="Ko-Fi"></a>
-	  <a href="https://www.youtube.com/@Toy_boss"><center><img src="YT.png" alt="Youtube"></center></a>
+  <div class="container">
+    <h1>Bonjour, moi c’est Toy_boss</h1>
+	<body class="light-mode">
+    <div class="photo">
+      <img src="PP.jpg" alt="Photo de profil">
+    </div>
+	<button id="toggle-theme">🌙 Mode sombre</button>
+    <div class="bio">
+      <p>Je suis un jeune youtubeur qui aime plusieurs choses dont la programmation. J'ai aussi créer un serveur discord, le lien sera ci dessous. Sur ma chaîne youtube, je ne posterai que des vidéo de gaming même si j'ai beaucoup de chose.</p>
     </div>
 
-    <footer>© 2025 - Tous droits réservés</footer>
-  </div>
+    <div class="section">
+      <h2>Ce que j’aime</h2>
+      <ul>
+        <li>Jouer à des jeux vidéos (MHW:I, GD, Mincraft, ...)</li>
+        <li>Construire des legos (technic à 2000 pcs généralement)</li>
+        <li>La mucique classique et les EDM.</li>
+        <li>Etudier en classe et chez moi même</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Mes projets</h2>
+      <p>Actuellement, j'envisagerai d'acheter un ordinateur portable pour mes études donc si vous pouvez, faites un don dans le lien ci dessous. Je vise aussi les 100 abonnés sur ma chaîne youtube.
+    </div>
+
+    <div class="section">
+      <h2>Me contacter</h2>
+      <p>Tu peux me contacter sur cet adresse mail : <strong>toyboss086@gmail.com</strong> ou alors sur discord avec mon identifiant : <strong>toy_boss086</strong></p>
+    </div>
+	
+	 <div class="section">
+      <h2>Des liens utiles</h2>
+     <center> <a href="https://discord.gg/NKY73CRepF"><img src="DC.png" alt="serveur discord" class="petite-image" class="petite-image:hover"></a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+	  <a href="https://ko-fi.com/toyboss"><img src="KF.png" alt="Me faire un don" class="petite-image" class="petite-image:hover"></a>
+	  &nbsp&nbsp&nbsp&nbsp&nbsp
+	  <a href="https://www.youtube.com/@Toy_boss"><img src="YT.png" alt="Ma chaîne youtube" class="petite-image" class="petite-image:hover"></a>&nbsp&nbsp&nbsp&nbsp&nbsp</center>
+	</div>
+	
+	
+<script>  
+const toggleBtn = document.getElementById('toggle-theme');
+const body = document.body;
+
+toggleBtn.addEventListener('click', () => {
+  body.classList.toggle('light-mode');
+  body.classList.toggle('dark-mode');
+
+  // Changer le texte du bouton
+  if (body.classList.contains('dark-mode')) {
+    toggleBtn.textContent = '☀️ Mode clair';
+  } else {
+    toggleBtn.textContent = '🌙 Mode sombre';
+  }
+});
+</script>
+<footer><strong><p> © - Tout Droit Réservé</p></strong></footer>
 </body>
 </html>
