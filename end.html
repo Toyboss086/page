@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fin</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #020202; 
+            color: #b0b0b0; 
+            font-family: 'Caveat', cursive; 
+            font-size: 1.45rem; 
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; 
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* --- STYLE DE L'ÉTOILE --- */
+        .star-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 4s ease; 
+        }
+
+        .star {
+            font-size: 3.5rem;
+            color: rgb(150, 25, 25);
+            text-shadow: 0 0 15px rgba(150, 25, 25, 0.6);
+            animation: pulse 2.5s infinite ease-in-out;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .star-hint {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.8rem;
+            color: #333;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; text-shadow: 0 0 10px rgba(150, 25, 25, 0.4); }
+            50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 25px rgba(200, 30, 30, 0.9); }
+            100% { transform: scale(1); opacity: 0.4; text-shadow: 0 0 10px rgba(150, 25, 25, 0.4); }
+        }
+
+        /* --- STYLE DU TEXTE --- */
+        .final-message {
+            display: none; 
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        h1 {
+            font-family: 'Special Elite', monospace;
+            color: rgb(110, 15, 15);
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        /* Effet de curseur qui clignote à la fin du texte */
+        .typewriter-text::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: rgb(110, 15, 15);
+            font-weight: bold;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .signature {
+            opacity: 0;
+            text-align: center;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.9rem;
+            color: #444;
+            margin-top: 50px;
+            transition: opacity 1.5s ease;
+        }
+
+        .back-home {
+            opacity: 0;
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.85rem;
+            color: #222;
+            text-decoration: none;
+            transition: opacity 1.5s ease, color 0.3s;
+        }
+        
+        .back-home:hover {
+            color: rgb(110, 15, 15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="star-container" id="star-box">
+            <div class="star">★</div>
+            <div class="star-hint">[ Éteindre l'étoile ]</div>
+        </div>
+
+        <div class="final-message" id="text-box">
+            <h1>Le dernier mot</h1>
+            
+            <div class="typewriter-text" id="typewriter"></div>
+
+            <div class="signature" id="final-signature">Adieu, ma petite étoile.</div>
+            <a href="index.html" class="back-home" id="home-btn">Retourner au site officiel</a>
+        </div>
+
+    </div>
+
+    <script>
+        const starBox = document.getElementById('star-box');
+        const textBox = document.getElementById('text-box');
+        const typewriterEl = document.getElementById('typewriter');
+        const signatureEl = document.getElementById('final-signature');
+        const homeBtnEl = document.getElementById('home-btn');
+
+        // Le texte à taper (\n sert à faire des sauts de ligne)
+        const textToType = "Voilà... C’est ici que tout s’arrête vraiment.\n\nJe voulais juste que ces quelques pages restent là, gravées dans un coin d'Internet, comme une preuve que tout ça a existé. Que mes sentiments étaient vrais.\n\nPrends soin de toi Elena. De ton avenir, de tes choix, et de ton bonheur, peu importe avec qui il s'écrit désormais.\n\nMerci d'avoir fait briller mon ciel, durant un an... \n\n\nJe t'aime...";
+
+        let index = 0;
+        const typingSpeed = 100; // Vitesse d'écriture en millisecondes (plus le chiffre est bas, plus c'est rapide)
+
+        function typeWriter() {
+            if (index < textToType.length) {
+                // Gestion des sauts de ligne
+                if (textToType.charAt(index) === '\n') {
+                    typewriterEl.innerHTML += '<br>';
+                } else {
+                    typewriterEl.innerHTML += textToType.charAt(index);
+                }
+                index++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // Une fois le texte fini, on fait apparaître la signature et le bouton de retour en douceur
+                signatureEl.style.opacity = '1';
+                homeBtnEl.style.opacity = '1';
+            }
+        }
+
+        starBox.addEventListener('click', () => {
+            starBox.style.opacity = '0';
+            starBox.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                starBox.style.display = 'none'; 
+                document.body.style.overflow = 'auto'; // Permet de scroller si le texte dépasse sur petit écran
+                textBox.style.display = 'block';
+                
+                // On lance l'effet d'écriture automatique
+                typeWriter();
+            }, 4000); 
+        });
+    </script>
+</body>
+</html>
