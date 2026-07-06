@@ -39,7 +39,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: opacity 4s ease; 
+            transition: opacity 1.5s ease; 
         }
 
         .star {
@@ -70,8 +70,9 @@
             display: none; 
             text-align: left;
             line-height: 1.5;
+            opacity: 0; /* Commence invisible */
+            transition: opacity 2s ease; /* Transition douce */
         }
-
         h1 {
             font-family: 'Special Elite', monospace;
             color: rgb(110, 15, 15);
@@ -111,7 +112,7 @@
             margin-top: 40px;
             font-family: 'Special Elite', monospace;
             font-size: 0.85rem;
-            color: #222;
+            color: #333;
             text-decoration: none;
             transition: opacity 1.5s ease, color 0.3s;
         }
@@ -123,20 +124,24 @@
 </head>
 <body>
 
+    <audio id="bg-music" src="end.mp3" loop></audio>
+
+
     <div class="container">
         
         <div class="star-container" id="star-box">
             <div class="star">★</div>
-            <div class="star-hint">[ Éteindre l'étoile ]</div>
+            <div class="star-hint">Clique sur l'étoile</div>
+            <div class="star-hint style="color: #555; margin-top: 5px;>Il y aura de la musique alors met un peu de son</div>
         </div>
 
         <div class="final-message" id="text-box">
             <h1>Le dernier mot</h1>
-            
+
             <div class="typewriter-text" id="typewriter"></div>
 
             <div class="signature" id="final-signature">Adieu, ma petite étoile.</div>
-            <a href="index.html" class="back-home" id="home-btn">Retourner au site officiel</a>
+            <a href="index.html" class="back-home" id="home-btn">Retourner au site officiel... (reste et écoute la musique plutot...)</a>
         </div>
 
     </div>
@@ -147,42 +152,72 @@
         const typewriterEl = document.getElementById('typewriter');
         const signatureEl = document.getElementById('final-signature');
         const homeBtnEl = document.getElementById('home-btn');
+        const bgMusic = document.getElementById('bg-music');
 
         // Le texte à taper (\n sert à faire des sauts de ligne)
-        const textToType = "Voilà... C’est ici que tout s’arrête vraiment.\n\nJe voulais juste que ces quelques pages restent là, gravées dans un coin d'Internet, comme une preuve que tout ça a existé. Que mes sentiments étaient vrais.\n\nPrends soin de toi Elena. De ton avenir, de tes choix, et de ton bonheur, peu importe avec qui il s'écrit désormais.\n\nMerci d'avoir fait briller mon ciel, durant un an... \n\n\nJe t'aime...";
+        const textToType = "Voilà... C’est ici que tout s’arrête vraiment.\n\nJe voulais juste que ces quelques pages restent là, gravées dans un coin d'Internet, comme une preuve que tout ça a existé. Que mes sentiments étaient vrais.\n\nPrends soin de toi, Elena. De ton avenir, de tes choix, et de ton bonheur, peu importe avec qui il s'écrit désormais.\n\nMerci d'avoir fait briller mon ciel, durant un an... \n\nJe me suoviendrai toujours de notre premier calin et de toi, mon premier amour... \n\nJe t'aime...";
 
         let index = 0;
-        const typingSpeed = 100; // Vitesse d'écriture en millisecondes (plus le chiffre est bas, plus c'est rapide)
+
 
         function typeWriter() {
             if (index < textToType.length) {
-                // Gestion des sauts de ligne
                 if (textToType.charAt(index) === '\n') {
                     typewriterEl.innerHTML += '<br>';
                 } else {
                     typewriterEl.innerHTML += textToType.charAt(index);
                 }
                 index++;
-                setTimeout(typeWriter, typingSpeed);
+                
+                // Génère une vitesse aléatoire entre 30ms et 80ms pour simuler une frappe humaine
+                const randomSpeed = Math.floor(Math.random() * 50) + 30; 
+                setTimeout(typeWriter, randomSpeed);
             } else {
-                // Une fois le texte fini, on fait apparaître la signature et le bouton de retour en douceur
                 signatureEl.style.opacity = '1';
                 homeBtnEl.style.opacity = '1';
             }
         }
+        function fadeInAudio(audioElement, durationMs) {
+            audioElement.volume = 0; // On commence à zéro de volume
+            
+            const intervalTime = 50; // On augmente le volume toutes les 50ms
+            const numberOfSteps = durationMs / intervalTime;
+            const volumeIncrement = 1 / numberOfSteps; // Le palier d'augmentation
 
+            const fadeInterval = setInterval(() => {
+                if (audioElement.volume < 0.95) {
+                    audioElement.volume += volumeIncrement;
+                } else {
+                    audioElement.volume = 1; // Sécurité pour atteindre le max
+                    clearInterval(fadeInterval); // On arrête le fondu
+                }
+            }, intervalTime);
+        }
         starBox.addEventListener('click', () => {
+            bgMusic.volume = 0;
+            
+            bgMusic.play().then(() => {
+                // Lance le fondu sonore sur une durée de 3000ms (3 secondes)
+                fadeInAudio(bgMusic, 3000);
+            }).catch(error => {
+                console.log("L'audio n'a pas pu se lancer :", error);
+            });
+
             starBox.style.opacity = '0';
             starBox.style.pointerEvents = 'none';
 
+        setTimeout(() => {
+            starBox.style.display = 'none'; 
+            document.body.style.overflow = 'auto'; 
+            textBox.style.display = 'block';
+            
+            // Un infime délai pour laisser le display: block s'activer, puis on gère l'opacité
             setTimeout(() => {
-                starBox.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; // Permet de scroller si le texte dépasse sur petit écran
-                textBox.style.display = 'block';
-                
-                // On lance l'effet d'écriture automatique
+                textBox.style.opacity = '1';
+            }, 50);
+
                 typeWriter();
-            }, 4000); 
+            }, 2000);
         });
     </script>
 </body>
